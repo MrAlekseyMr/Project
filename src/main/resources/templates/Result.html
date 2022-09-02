@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Home</title>
+</head>
+<body>
+  <p>Страница калькулутора !!!</p>
+  <br>
+  <form method="post" action="/res">
+    <div style="display: flex;">
+      <input style="width: 400px; margin-right: 10px; font-size: 18px;" id="var1" name="var1" placeholder="Введите выражение 1, например, (2+3)*(4/2)">
+      <p th:text="'Результат №1: ' + ${name1} + '!'" />
+    </div>
+    <div style="display: flex; margin-top: 10px;">
+      <input style="width: 400px; margin-right: 10px; font-size: 18px;" id="var2" name="var2" placeholder="Введите выражение 2, например, (2+3)*(4/2)">
+      <p th:text="'Результат №2: ' + ${name2} + '!'" />
+    </div>
+    <input type="submit"></input>
+  </form>
+  <a href="/">Нажми на меня, чтобы вернуться на главную страницу</a>
+</body>
+</html>
