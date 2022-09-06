@@ -14,18 +14,13 @@ import javax.script.ScriptException;
 @Controller
 public class MainController {
     @GetMapping("/")
-    public String greeting(@RequestParam(name="name", required=false, defaultValue="HOME") String name, Model model) {
-        model.addAttribute("name", name);
+    public String greeting(Model model) {
+        model.addAttribute("title", "КаЛьКуЛюТоР");
         return "home";
     }
 
     @GetMapping("/res")
-    public String Calc(
-            @RequestParam(name="var1", required=false, defaultValue="1") int a,
-            @RequestParam(name="var2", required=false, defaultValue="1") int b,
-            Model model){
-        int res = a+b;
-        model.addAttribute("name", "Заполните поля");
+    public String Calc(){
         return "Result";
     }
 
