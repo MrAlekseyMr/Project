@@ -19,7 +19,9 @@
   <div class="row my-5">
     <div class="col-12 col-md-3 md-3" th:each="el : ${tovari}">
       <div class="card bg-light mb-3" style="max-width: 18rem;">
-        <div th:text="${el.name}" class="card-header"></div>
+        <a th:href="'/tovari/' + ${el.ID}">
+          <div th:text="${el.name}" class="card-header"></div>
+        </a>
         <div class="card-body">
           <h5 th:text="${el.articul}" class="card-title"></h5>
           <div style="display: flex;">
