@@ -10,22 +10,26 @@
 <body>
 <div class="container" th:each="el : ${tovari}">
     <h1 style="text-align: center;">Изменение товара</h1>
-    <form style="text-align: center; margin-top: 20px;" th:action="'/tovari/edit/' + ${el.ID}" method="post">
+    <form th:object="${tovari2}" style="text-align: center; margin-top: 20px;" th:action="'/tovari/edit/' + ${el.ID}" method="post">
         <label style="width: 120px;text-align: right;" for="name">Наименование:</label>
         <input style="width: 40%; margin-top: 20px;" type="text" th:value="${el.Name}" placeholder="наименование" id="name" name="name"></input>
+        <div style="color: red;" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
         <div></div>
         <label style="width: 120px;text-align: right;" for="articul">Артикул:</label>
         <input style="width: 40%; margin-top: 20px;" type="text" th:value="${el.Articul}" placeholder="Артикул" id="articul" name="articul">
+        <div style="color: red;" th:if="${#fields.hasErrors('articul')}" th:errors="*{articul}"></div>
         <div></div>
         <label style="width: 120px;text-align: right;" for="type">Тип:</label>
         <input style="width: 40%; margin-top: 20px;" type="text" th:value="${el.Type}" placeholder="тип" id="type" name="type">
+        <div style="color: red;" th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></div>
         <div></div>
         <label style="width: 120px;text-align: right;" for="price">Цена:</label>
         <input style="width: 40%; margin-top: 20px;" type="number" step="0.01" th:value="${el.Price}" placeholder="цена" id="price" name="price">
+        <div style="color: red;" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
         <div></div>
-        <label style="width: 120px;text-align: right;" for="srok">Срок годности:</label>
+<!--        <label style="width: 120px;text-align: right;" for="srok">Срок годности:</label>
         <input style="width: 40%; margin-top: 20px;" type="date" th:value="${el.srokGodnosti}"  placeholder="срок годности" id="srok" name="srok">
-        <div></div>
+        <div></div>-->
         <input type="submit" style="margin-top: 10px;" value="Изменить товар" class="mt-10 btn btn-success">
         <a th:href="'/tovari/' + ${el.ID}" style="margin-top: 10px;" class="btn btn-primary">Назад</a>
     </form>

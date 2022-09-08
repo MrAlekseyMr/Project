@@ -9,16 +9,21 @@
 <header class="p-3 text-bg-dark" th:insert="fragments/header :: defaultheader"></header>
 <body>
     <h1 style="text-align: center;">Добавление новости</h1>
-    <form style="text-align: center; margin-top: 20px;" action="/news/add" method="post">
+    <form th:object="${news}" style="text-align: center; margin-top: 20px;" action="/news/add" method="post">
         <input style="width: 40%; margin-top: 20px;" type="text" placeholder="Title" id="title" name="title">
+        <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
         <div></div>
         <textarea style="width: 40%; margin-top: 20px;" type="text" placeholder="BodyText" id="body_text" name="body_text"></textarea>
+        <div th:if="${#fields.hasErrors('body_text')}" th:errors="*{body_text}"></div>
         <div></div>
         <input style="width: 40%; margin-top: 20px;" type="text" placeholder="Author" id="author" name="author">
+        <div th:if="${#fields.hasErrors('author')}" th:errors="*{author}"></div>
         <div></div>
         <input style="width: 40%; margin-top: 20px;" type="number" placeholder="Views" id="views" name="views">
+        <div th:if="${#fields.hasErrors('views')}" th:errors="*{views}"></div>
         <div></div>
         <input style="width: 40%; margin-top: 20px;" type="number" placeholder="Likes" id="likes" name="likes">
+        <div th:if="${#fields.hasErrors('likes')}" th:errors="*{likes}"></div>
         <div></div>
         <input type="submit" style="margin-top: 10px;" value="Добавить новость" class="mt-10 btn btn-success">
         <a href="/news/" style="margin-top: 10px;" class="btn btn-primary">Назад</a>

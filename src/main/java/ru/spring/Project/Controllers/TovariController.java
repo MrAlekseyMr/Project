@@ -3,12 +3,15 @@ package ru.spring.Project.Controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ru.spring.Project.Models.News;
 import ru.spring.Project.Models.Tovari;
 import ru.spring.Project.Models.Users;
 import ru.spring.Project.repo.TovariRepository;
 import ru.spring.Project.repo.UsersRepository;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -32,20 +35,19 @@ public class TovariController {
     @GetMapping("/add")
     public String add(Model model)
     {
+        model.addAttribute("tovari", new Tovari());
         return "tovari/add";
     }
 
     @PostMapping("/add")
     public String AddPost(
-            @RequestParam("name") String name,
-            @RequestParam("articul") String articul,
-            @RequestParam("type") String type,
-            @RequestParam("price") Double price,
-            @RequestParam("srok") String srok,
+            @ModelAttribute("tovari") @Valid Tovari newTovar, BindingResult result,
             Model model)
     {
-        Tovari newOne = new Tovari(name,articul,type,price,srok);
-        tovariRepository.save(newOne);
+        if(result.hasErrors()) {
+            return "tovari/add";
+        }
+        tovariRepository.save(newTovar);
         return "redirect:/tovari/";
     }
 
@@ -84,26 +86,26 @@ public class TovariController {
         ArrayList<Tovari> arrayList = new ArrayList<>();
         tovar.ifPresent(arrayList::add);
         model.addAttribute("tovari", arrayList);
+        model.addAttribute("tovari2", new Tovari());
         return "tovari/edit";
     }
     @PostMapping("/edit/{id}")
     public String edit (@PathVariable("id") Long id,
-                        @RequestParam("name") String name,
-                        @RequestParam("articul") String articul,
-                        @RequestParam("type") String type,
-                        @RequestParam("price") Double price,
-                        @RequestParam("srok") String srok,
+                        @ModelAttribute("tovari2") @Valid Tovari newTovar, BindingResult result,
                         Model model) {
+        if(result.hasErrors()) {
+            Optional<Tovari> tovar = tovariRepository.findById(id);
+            ArrayList<Tovari> arrayList = new ArrayList<>();
+            tovar.ifPresent(arrayList::add);
+            model.addAttribute("tovari", arrayList);
+            //model.addAttribute("tovari2", new Tovari());
+            return "tovari/edit";
+        }
+        else {
 
-        Tovari tovar = tovariRepository.findById(id).orElseThrow();
-
-        tovar.setName(name);
-        tovar.setArticul(articul);
-        tovar.setType(type);
-        tovar.setPrice(price);
-        tovar.setSrokGodnosti(srok);
-
-        tovariRepository.save(tovar);
-        return "redirect:/tovari/"+Long.toString(id);
+            Tovari tovar = tovariRepository.findById(id).orElseThrow();
+            tovariRepository.save(newTovar);
+            return "redirect:/tovari/" + Long.toString(id);
+        }
     }
 }

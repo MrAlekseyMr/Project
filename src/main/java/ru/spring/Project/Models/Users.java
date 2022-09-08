@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.*;
 
 @Entity
 public class Users {
@@ -11,7 +12,14 @@ public class Users {
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long ID;
 
-    String familia,ima,work,otdel;
+    @NotBlank(message = "Заполните поле")
+    @Size(message = "Укажите минимум 2 символа, Максимум 150",min = 2,max=150)
+    String familia,ima;
+    @NotBlank(message = "Заполните поле")
+    @Size(message = "Укажите минимум 2 символа, Максимум 250",min = 2,max=250)
+    String work,otdel;
+    @DecimalMin(message =  "МРОТ составляет 13 890 рублей. Меньше зарплата быть не может", value= "13890")
+    @NotNull(message = "Заполните поле")
     Double zaraplata;
 
     public Users() {

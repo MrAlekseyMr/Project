@@ -16,7 +16,6 @@
 
         <h3 class="fs-4" th:text="'Тип: ' + ${el.Type}"></h3>
         <h3 class="fs-4" th:text="'Цена: ' + ${el.Price}"></h3>
-        <h3 class="fs-4" th:text="'Срок годности: ' + ${el.SrokGodnosti}"></h3>
 
         <a th:href="'delete/' + ${el.ID}" class="btn btn-danger me-2">Удалить товар</a>
         <a th:href="'edit/' + ${el.ID}" class="btn btn-warning">Изменить товар</a>

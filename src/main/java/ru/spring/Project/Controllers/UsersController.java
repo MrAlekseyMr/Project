@@ -3,10 +3,14 @@ package ru.spring.Project.Controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ru.spring.Project.Models.News;
+import ru.spring.Project.Models.Tovari;
 import ru.spring.Project.Models.Users;
 import ru.spring.Project.repo.UsersRepository;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,21 +33,21 @@ public class UsersController {
     @GetMapping("/add")
     public String add(Model model)
     {
+        model.addAttribute("users", new Users());
         return "users/add";
     }
 
     @PostMapping("/add")
     public String AddPost(
-            @RequestParam("Familia") String familia,
-            @RequestParam("Ima") String ima,
-            @RequestParam("Work") String work,
-            @RequestParam("Otdel") String otdel,
-            @RequestParam("Zaraplata") Double zarplata,
+            @ModelAttribute("users") @Valid Users newUser, BindingResult result,
             Model model)
     {
-        Users newOne = new Users(familia,ima,work,otdel,zarplata);
-        userRepository.save(newOne);
-        return "redirect:/users/";
+        if(result.hasErrors())
+            return "users/add";
+        else {
+            userRepository.save(newUser);
+            return "redirect:/users/";
+        }
     }
 
     @GetMapping("/search")
@@ -81,26 +85,25 @@ public class UsersController {
         ArrayList<Users> arrayList = new ArrayList<>();
         user.ifPresent(arrayList::add);
         model.addAttribute("users", arrayList);
+        model.addAttribute("users2", new Users());
         return "users/edit";
     }
     @PostMapping("/edit/{id}")
     public String edit (@PathVariable("id") Long id,
-                        @RequestParam("Familia") String familia,
-                        @RequestParam("Ima") String ima,
-                        @RequestParam("Work") String work,
-                        @RequestParam("Otdel") String otdel,
-                        @RequestParam("Zaraplata") Double zarplata,
+                        @ModelAttribute("users2") @Valid Users newUser, BindingResult result,
                         Model model) {
+        if(result.hasErrors()) {
+            Optional<Users> user = userRepository.findById(id);
+            ArrayList<Users> arrayList = new ArrayList<>();
+            user.ifPresent(arrayList::add);
+            model.addAttribute("users", arrayList);
+            return "users/edit";
+        }
+        else {
+            Users user = userRepository.findById(id).orElseThrow();
 
-        Users user = userRepository.findById(id).orElseThrow();
-
-        user.setFamilia(familia);
-        user.setIma(ima);
-        user.setWork(work);
-        user.setOtdel(otdel);
-        user.setZaraplata(zarplata);
-
-        userRepository.save(user);
-        return "redirect:/users/"+Long.toString(id);
+            userRepository.save(newUser);
+            return "redirect:/users/"+Long.toString(id);
+        }
     }
 }
