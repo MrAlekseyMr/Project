@@ -98,12 +98,11 @@ public class TovariController {
             ArrayList<Tovari> arrayList = new ArrayList<>();
             tovar.ifPresent(arrayList::add);
             model.addAttribute("tovari", arrayList);
-            //model.addAttribute("tovari2", new Tovari());
             return "tovari/edit";
         }
         else {
-
             Tovari tovar = tovariRepository.findById(id).orElseThrow();
+            newTovar.setID(tovar.getID());
             tovariRepository.save(newTovar);
             return "redirect:/tovari/" + Long.toString(id);
         }

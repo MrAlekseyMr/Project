@@ -8,5 +8,11 @@
 </head>
 <header class="p-3 text-bg-dark" th:insert="fragments/header :: defaultheader"></header>
 <body>
+    <div th:if="${#httpServletRequest.remoteUser != null}">
+        <h1 style="text-align: center;" th:inline="text">Добро пожаловать, [[${#httpServletRequest.remoteUser}]]!</h1>
+    </div>
+    <div th:if="${#httpServletRequest.remoteUser == null}">
+        <h1 style="text-align: center;" th:inline="text">Пройдите процедуру авторизации!</h1>
+    </div>
 </body>
 </html>

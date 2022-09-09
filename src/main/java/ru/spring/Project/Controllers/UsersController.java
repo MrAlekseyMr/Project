@@ -101,7 +101,7 @@ public class UsersController {
         }
         else {
             Users user = userRepository.findById(id).orElseThrow();
-
+            newUser.setID(user.getID());
             userRepository.save(newUser);
             return "redirect:/users/"+Long.toString(id);
         }
