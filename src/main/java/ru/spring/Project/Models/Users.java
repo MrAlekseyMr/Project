@@ -1,10 +1,8 @@
 package ru.spring.Project.Models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.util.List;
 
 @Entity
 public class Users {
@@ -22,7 +20,36 @@ public class Users {
     @NotNull(message = "Заполните поле")
     Double zaraplata;
 
+    @OneToOne(optional = true, cascade = CascadeType.ALL)
+    @JoinColumn(name="snils_id")
+    private SNILS snils;
+
+    @ManyToMany
+    @JoinTable (name="redactor_news",
+            joinColumns=@JoinColumn (name="redactor_id"),
+            inverseJoinColumns=@JoinColumn(name="news_id"))
+    public List<News> news;
+
     public Users() {
+    }
+
+    public SNILS getSnils() {
+        return snils;
+    }
+
+    public void setSnils(SNILS snils) {
+        this.snils = snils;
+    }
+
+    public Users(Users newUser, SNILS snils) {
+    }
+
+    public List<News> getNews() {
+        return news;
+    }
+
+    public void setNews(List<News> news) {
+        this.news = news;
     }
 
     public void setID(Long ID) {

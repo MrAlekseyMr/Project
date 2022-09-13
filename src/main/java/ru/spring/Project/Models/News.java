@@ -1,10 +1,8 @@
 package ru.spring.Project.Models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.util.List;
 
 @Entity
 public class News {
@@ -17,6 +15,7 @@ public class News {
     @NotEmpty(message = "Ты чо МПТшник чтоль?! Не тупи, заполни поле")
     @Size(message = "Строка не может быть больше 10000 символов",min = 3,max=10000)
     String body_text;
+
     @NotNull(message = "Нпишите автора")
     @NotEmpty(message = "Ты чо МПТшник чтоль?! Не тупи, заполни поле")
     String author;
@@ -25,7 +24,20 @@ public class News {
     @Max(message = "Количество не может быть больше 100000", value = 100000)
     Integer likes, views;
 
-    //@NotBlank //Обрезает пробелы по бокам, чтобы строка не была пустой
+    @ManyToMany
+    @JoinTable(name="redactor_news",
+            joinColumns=@JoinColumn(name="news_id"),
+            inverseJoinColumns=@JoinColumn(name="redactor_id"))
+    public List<Users> redactors;
+
+    public List<Users> getRedactors() {
+        return redactors;
+    }
+
+    public void setRedactors(List<Users> redactors) {
+        this.redactors = redactors;
+    }
+//@NotBlank //Обрезает пробелы по бокам, чтобы строка не была пустой
     //@DecimalMax()
     //@DecimalMin()
     //@Digits() //Проверяет вещественные числа

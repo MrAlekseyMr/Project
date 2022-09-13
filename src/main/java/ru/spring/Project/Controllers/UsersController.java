@@ -6,8 +6,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.spring.Project.Models.News;
+import ru.spring.Project.Models.SNILS;
 import ru.spring.Project.Models.Tovari;
 import ru.spring.Project.Models.Users;
+import ru.spring.Project.repo.SnilsRepository;
 import ru.spring.Project.repo.UsersRepository;
 
 import javax.validation.Valid;
@@ -21,6 +23,8 @@ public class UsersController {
 
     @Autowired
     private UsersRepository userRepository;
+    @Autowired
+    private SnilsRepository snilsRepository;
 
     @GetMapping("/")
     public String index(Model model)
@@ -34,12 +38,14 @@ public class UsersController {
     public String add(Model model)
     {
         model.addAttribute("users", new Users());
+        Iterable<SNILS> snils = snilsRepository.findAll();
+        model.addAttribute("snils", snils);
         return "users/add";
     }
 
     @PostMapping("/add")
     public String AddPost(
-            @ModelAttribute("users") @Valid Users newUser, BindingResult result,
+            @ModelAttribute("users") @Valid Users newUser,@RequestParam Long snils, BindingResult result,
             Model model)
     {
         if(result.hasErrors())
