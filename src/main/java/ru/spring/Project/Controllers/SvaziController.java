@@ -64,6 +64,6 @@ public class SvaziController {
         ng.getRedactors().add(user);
         usersRepository.save(user);
         newsRepository.save(ng);
-        return "svazi/addredactors";
+        return "redirect:/svazi/addredactors";
     }
 }

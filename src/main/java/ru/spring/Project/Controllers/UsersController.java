@@ -1,14 +1,12 @@
 package ru.spring.Project.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.spring.Project.Models.News;
-import ru.spring.Project.Models.SNILS;
-import ru.spring.Project.Models.Tovari;
-import ru.spring.Project.Models.Users;
+import ru.spring.Project.Models.*;
 import ru.spring.Project.repo.SnilsRepository;
 import ru.spring.Project.repo.UsersRepository;
 
@@ -19,6 +17,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/users")
+@PreAuthorize("hasAnyAuthority('USER') || hasAnyAuthority('ADMIN')")
 public class UsersController {
 
     @Autowired
@@ -45,11 +44,14 @@ public class UsersController {
 
     @PostMapping("/add")
     public String AddPost(
-            @ModelAttribute("users") @Valid Users newUser,@RequestParam Long snils, BindingResult result,
+            @ModelAttribute("users") @Valid Users newUser,BindingResult result,@RequestParam Long snils,
             Model model)
     {
-        if(result.hasErrors())
+        if(result.hasErrors()) {
+            Iterable<SNILS> snilss = snilsRepository.findAll();
+            model.addAttribute("snils", snilss);
             return "users/add";
+        }
         else {
             userRepository.save(newUser);
             return "redirect:/users/";

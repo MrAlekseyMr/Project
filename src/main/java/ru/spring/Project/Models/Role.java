@@ -1,5 +1,10 @@
 package ru.spring.Project.Models;
 
+import org.springframework.security.core.GrantedAuthority;
+
 public enum Role {
-    AUTHUSER;
+    USER,ADMIN,AUTHUSER;
+    public String getAuthority() {
+        return name();
+    }
 }

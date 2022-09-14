@@ -3,6 +3,7 @@ package ru.spring.Project.Models;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Users {
@@ -29,6 +30,13 @@ public class Users {
             joinColumns=@JoinColumn (name="redactor_id"),
             inverseJoinColumns=@JoinColumn(name="news_id"))
     public List<News> news;
+
+    private boolean active;
+
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<Role> roles;
 
     public Users() {
     }

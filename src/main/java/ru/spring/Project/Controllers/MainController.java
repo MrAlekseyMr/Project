@@ -1,22 +1,30 @@
 package ru.spring.Project.Controllers;
 
 import org.openjdk.nashorn.api.scripting.NashornScriptEngineFactory;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.spring.Project.Models.Role;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import java.util.Collection;
 
 @Controller
 public class MainController {
     @GetMapping("/")
     public String greeting(Model model) {
         model.addAttribute("title", "КаЛьКуЛюТоР");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        boolean hasUserRole = authentication.getAuthorities().stream()
+                .anyMatch(r -> r.getAuthority().equals("ADMIN"));
+        System.out.println("ffff:"+hasUserRole);
         return "home";
     }
 
